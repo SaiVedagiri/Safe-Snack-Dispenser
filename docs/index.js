@@ -19,6 +19,7 @@ recognition.onresult = async function (event) {
       interim_transcript += event.results[i][0].transcript;
     }
   }
+  console.log(interim_transcript);
   if (interim_transcript.includes("dispense")) {
     await axios({
       method: "POST",
