@@ -12,7 +12,7 @@ def shutdown_server():
     func()
     
 def dispenseCandy():
-    return 0
+    print('dispenseCandy()')
 
 @app.route('/dispense', methods=['POST'])
 def dispense():
@@ -20,13 +20,25 @@ def dispense():
     return None
     
 if __name__ == "__main__":
-    ultrasonic = DistanceSensor(echo=18, trigger=23, max_distance=1, threshold_distance=0.2)
+    ultrasonic = DistanceSensor(echo=18, trigger=23, max_distance=1, threshold_distance=0.3)
     servo = AngularServo(24)
+    voice = False
 
     while True:
-        ultrasonic.wait_for_in_range()
+        if not voice:
+            ultrasonic.wait_for_in_range()
+            dist = ultrasonic.distance
+            print(dist)
+            if dist < 0.1:
+                voice = True
+                print('voice = True')
+        else:
+            voice = False
+            print('voice = False')
+            app.run(host='0.0.0.0', port=80)
+            print('verbal dispense')
+
         dispenseCandy()
-        break
+        ultrasonic.wait_for_out_of_range()
+        print('left')
     
-    app.run(host='0.0.0.0', port=80)
-    dispenseCandy()
