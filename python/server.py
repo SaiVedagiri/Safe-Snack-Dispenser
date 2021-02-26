@@ -13,6 +13,12 @@ def shutdown_server():
     
 def dispenseCandy():
     print('dispenseCandy()')
+    if (servo.angle < 0):
+        servo.angle = 0
+    elif (servo.angle < 90):
+        servo.angle = 90
+    else:
+        servo.angle = -90
 
 @app.route('/dispense', methods=['POST'])
 def dispense():
@@ -23,6 +29,7 @@ if __name__ == "__main__":
     ultrasonic = DistanceSensor(echo=18, trigger=23, max_distance=1, threshold_distance=0.3)
     servo = AngularServo(24)
     voice = False
+    servo.angle = -90
 
     while True:
         if not voice:

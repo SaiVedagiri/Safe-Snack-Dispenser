@@ -8,28 +8,27 @@ servo.angle = 0
 count = 0
 
 def turn(count):
-    if count % 5 == 0:
+    if count % 3 == 0:
         return -90
-    elif count % 5 == 1:
-        return -45
-    elif count % 5 == 2:
+    elif count % 3 == 1:
         return 0
-    elif count % 5 == 3:
-        return 45
     else:
         return 90
 
 while True:
-    ultrasonic.wait_for_in_range()
-    print('entered range')
-    count += 1
-
     servo.angle = turn(count)
-    print(servo.angle)
-
-    ultrasonic.wait_for_out_of_range()
-    print('left range')
     count += 1
+    time.sleep(3)
+    
+#     print('entered range')
+#     count += 1
 
-    servo.angle = turn(count)
-    print(servo.angle)
+#     servo.angle = turn(count)
+#     print(servo.angle)
+
+#     ultrasonic.wait_for_out_of_range()
+#     print('left range')
+#     count += 1
+
+#     servo.angle = turn(count)
+#     print(servo.angle)
