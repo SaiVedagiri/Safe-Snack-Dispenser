@@ -8,18 +8,22 @@ servo.angle = 0
 count = 0
 
 def turn(count):
-    if count % 3 == 0:
+    if count % 4 == 0:
         return -90
-    elif count % 3 == 1:
+    elif count % 4 == 1:
+        return -45
+    elif count % 4 == 2:
         return 0
     else:
         return 90
 
 while True:
-    servo.angle = turn(count)
-    count += 1
-    time.sleep(3)
+    # servo.angle = turn(count)
+    # count += 1
+    # time.sleep(3)
     
+    servo.angle = turn(3)
+
 #     print('entered range')
 #     count += 1
 
