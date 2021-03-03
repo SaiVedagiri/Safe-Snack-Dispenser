@@ -8,10 +8,10 @@ recognition.continuous = true;
 recognition.interimResults = true;
 recognition.lang = "en-us";
 recognition.start();
+let voiceText = document.getElementById('voiceText');
 
 recognition.onresult = async function (event) {
   interim_transcript = "";
-
   for (var i = event.resultIndex; i < event.results.length; ++i) {
     if (event.results[i].isFinal) {
       final_transcript += event.results[i][0].transcript;
@@ -19,9 +19,11 @@ recognition.onresult = async function (event) {
       interim_transcript += event.results[i][0].transcript;
     }
   }
+  voiceText.innerHTML = interim_transcript;
   console.log(interim_transcript);
   if (interim_transcript.includes("dispense")) {
-    await axios({
+    voiceText.style.color = "green";
+    axios({
       method: "POST",
       url:
         "http://localhost/dispense",
@@ -29,15 +31,19 @@ recognition.onresult = async function (event) {
         "Content-Type": "application/json"
       },
     });
+  } else{
+    voiceText.style.color = "black";
   }
 };
 
 recognition.onstart = function () {
   console.log("Voice recognition is ON.");
+  voiceText.innerHTML = "Voice recognition is ON.";
 };
 
 recognition.onspeechend = function () {
   console.log("No activity.");
+  voiceText.innerHTML = "Error occured.";
   location.reload();
   //   recognition.start();
 };
@@ -45,6 +51,7 @@ recognition.onspeechend = function () {
 recognition.onerror = function (event) {
   if (event.error == "no-speech") {
     console.log("Try again.");
+    voiceText.innerHTML = "Error occured.";
     location.reload();
   }
 };
